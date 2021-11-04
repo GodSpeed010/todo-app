@@ -4,7 +4,7 @@
 
 Submitted by: **Ahmad Hossain**
 
-Time spent: **1.3** hours spent in total
+Time spent: **1.9** hours spent in total
 
 ## User Stories
 
@@ -20,7 +20,7 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-* [✔] User can undo task deletion
+* [✔] User can **undo task deletion**
 
 ## Video Walkthrough
 
