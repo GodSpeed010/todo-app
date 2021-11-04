@@ -8,6 +8,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException
@@ -24,10 +25,16 @@ class MainActivity : AppCompatActivity() {
 
         val onLongClickListener = object: TaskItemAdapter.OnLongClickListener {
             override fun onItemLongClicked(position: Int) {
+                //stores the task to be deleted in case user wants to undo
+                val deletedTask = listOfTasks.elementAt(position)
+
                 //remove the item from the list
                 listOfTasks.removeAt(position)
                 //notify the adapter that our data set has changed
                 adapter.notifyDataSetChanged()
+
+                //shows a snackbar that informs the user they deleted a task and has an undo button
+                showUndoSnackbar(deletedTask, position)
 
                 saveItems()
             }
@@ -95,5 +102,27 @@ class MainActivity : AppCompatActivity() {
             ioException.printStackTrace()
         }
 
+    }
+
+    private fun showUndoSnackbar(deletedTask: String, position: Int): Boolean {
+        val deletedText = "Deleted a task"
+        val deletedTaskSnackbar = Snackbar.make(
+            findViewById(R.id.constraint_Layout),
+            deletedText,
+            Snackbar.LENGTH_SHORT)
+
+        //create the undo button
+        deletedTaskSnackbar.setAction("UNDO", View.OnClickListener {
+            //add the task back into its original position
+            listOfTasks.add(position, deletedTask)
+
+            //notify the adapter to display the change on screen
+            adapter.notifyDataSetChanged()
+        })
+
+        //show the SnackBar
+        deletedTaskSnackbar.show()
+
+        return true
     }
 }
