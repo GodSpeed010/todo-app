@@ -26,9 +26,9 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](https://imgur.com/kpvxiTU.gif)
+![Video Walkthrough](https://i.makeagif.com/media/11-04-2021/X7Kzzh.gif)
 
-GIF created with [gifyu](http://www.gifyu.com).
+GIF created with [makeagif](http://www.makeagif.com).
 
 ## Notes
 
