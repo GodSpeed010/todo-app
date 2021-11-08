@@ -60,17 +60,21 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.button).setOnClickListener {
             //1. Grab the text the user entered into @id/addTaskField
             val userInputtedTask = inputTextField.text.toString()
+			
+			//if task is not an empty String
+			if (userInputtedTask.isNotEmpty()) {
 
-            //2. Add the String to the listOfTasks
-            listOfTasks.add(userInputtedTask)
+                //2. Add the String to the listOfTasks
+                listOfTasks.add(userInputtedTask)
 
-            //Notify the adapter that our data has been updated
-            adapter.notifyItemInserted(listOfTasks.size - 1)
+                //Notify the adapter that our data has been updated
+                adapter.notifyItemInserted(listOfTasks.size - 1)
 
-            //3. Reset the text field
-            inputTextField.setText("")
+                //3. Reset the text field
+                inputTextField.setText("")
 
-            saveItems()
+                saveItems()
+			}
         }
     }
 
