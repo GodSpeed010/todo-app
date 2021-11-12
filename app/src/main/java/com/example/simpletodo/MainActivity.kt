@@ -1,11 +1,14 @@
 package com.example.simpletodo
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -13,8 +16,13 @@ import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException
 import java.nio.charset.Charset
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+    val KEY_ITEM_TEXT: String = "item_text"
+    val KEY_ITEM_POSITION: String = "item position"
+    val EDIT_TEXT_CODE: Int = 20
 
     var listOfTasks = mutableListOf<String>()
     lateinit var adapter: TaskItemAdapter
@@ -22,6 +30,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        loadItems()
 
         val onLongClickListener = object: TaskItemAdapter.OnLongClickListener {
             override fun onItemLongClicked(position: Int) {
@@ -41,12 +51,23 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        loadItems()
+        val onClickListener = object: TaskItemAdapter.OnClickListener {
+            override fun onItemClicked(position: Int) {
+                //create the new activity
+                val i = Intent(this@MainActivity, EditActivity::class.java)
 
+                //pass the data being edited
+                i.putExtra(KEY_ITEM_TEXT, listOfTasks.get(position))
+                i.putExtra(KEY_ITEM_POSITION, position)
+
+                //display the activity
+                startActivityForResult(i, EDIT_TEXT_CODE)
+            }
+        }
         //look up recyclerView in layout
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         // Create adapter passing in the sample user data
-        adapter = TaskItemAdapter(listOfTasks, onLongClickListener)
+        adapter = TaskItemAdapter(listOfTasks, onLongClickListener, onClickListener)
         //Attach the adapter to the recyclerView to populate items
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -78,6 +99,43 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //handle the result of the edit activity
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        //super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == RESULT_OK && requestCode == EDIT_TEXT_CODE) {
+            // Retrieve the updated text value
+            val itemText: String? = data?.getStringExtra(KEY_ITEM_TEXT)
+
+            //extract the original position of the edited item from the position key
+            val position: Int? = data?.getIntExtra(KEY_ITEM_POSITION, 0)
+
+            //update the model at the right position with new item text
+            if (position != null) {
+                if (itemText != null) {
+                    listOfTasks.set(position, itemText)
+                }
+            }
+
+            //notify the adapter
+            if (position != null) {
+                adapter.notifyItemChanged(position)
+            }
+
+            //save the changes
+            saveItems()
+
+            //show confirmation Toast
+            Toast.makeText(applicationContext, "Item updated successfully!", Toast.LENGTH_SHORT).show()
+        } else {
+            Log.w("my_tag", "Unknown call to onActivityResult")
+        }
+//        val editedText: String = intent.getStringExtra(EditActivity().KEY_ITEM_TEXT)
+//
+//        adapter.notifyDataSetChanged()
+//
+//        saveItems()
+    }
     //Save the data that the user has inputted
     //Save data by writing and reading from a file
 
@@ -122,10 +180,14 @@ class MainActivity : AppCompatActivity() {
 
             //notify the adapter to display the change on screen
             adapter.notifyDataSetChanged()
+
+            //save the list
+            saveItems()
         })
 
         //show the SnackBar
         deletedTaskSnackbar.show()
+
 
         return true
     }
