@@ -4,6 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -140,7 +142,7 @@ class MainActivity : AppCompatActivity() {
     //Save data by writing and reading from a file
 
     //Get the file we need
-     fun getDataFile(): File {
+    fun getDataFile(): File {
 
         //Every line is going te represent a specific task in our list of tasks
         return File(filesDir, "data.txt")
@@ -190,5 +192,30 @@ class MainActivity : AppCompatActivity() {
 
 
         return true
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu) : Boolean {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle presses on the action bar items
+        when (item.getItemId()) {
+            R.id.miTheme -> {
+                Log.d("my_tag", "Theme button pressed")
+                //TODO launch ThemeActivity
+                //create the new activity
+                val i = Intent(this@MainActivity, ThemeActivity::class.java)
+
+                //launch the activity
+                startActivity(i)
+
+                return true
+            }
+            else ->
+                return super.onOptionsItemSelected(item)
+        }
     }
 }
