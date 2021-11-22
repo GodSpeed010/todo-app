@@ -18,20 +18,18 @@ class ThemeActivity : AppCompatActivity() {
         findViewById<Button>(R.id.btn_red).setOnClickListener {
             //change theme to red
             setTheme(R.style.Theme_SimpleToDo_Red)
-            setContentView(R.layout.activity_theme)
             supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.red_800)))
 
         }
         findViewById<Button>(R.id.btn_green).setOnClickListener {
+            //change theme to green
             setTheme(R.style.Theme_SimpleToDo_Green)
-            setContentView(R.layout.activity_theme)
             supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.green_800)))
         }
         findViewById<Button>(R.id.btn_blue).setOnClickListener {
+            //change theme to blue
             setTheme(R.style.Theme_SimpleToDo_Blue)
-            setContentView(R.layout.activity_theme)
             supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.blue_700)))
-
         }
 
     }
