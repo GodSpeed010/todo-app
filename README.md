@@ -4,7 +4,7 @@
 
 Submitted by: **Ahmad Hossain**
 
-Time spent: **4.3** hours spent in total
+Time spent: **4.4** hours spent in total
 
 ## User Stories
 
@@ -28,7 +28,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](https://thumbs.gfycat.com/OrneryEnchantingAdder-size_restricted.gif)
+![Video Walkthrough](https://thumbs.gfycat.com/PoisedFrailJay-size_restricted.gif)
 
 GIF created with [gfycat](http://www.gfycat.com).
 
