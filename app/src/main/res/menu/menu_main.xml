@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/miTheme"
+        android:icon="@drawable/ic_theme"
+        app:showAsAction="ifRoom|withText"
+        android:title="Theme">
+    </item>
+</menu>
