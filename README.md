@@ -4,7 +4,7 @@
 
 Submitted by: **Ahmad Hossain**
 
-Time spent: **2.5** hours spent in total
+Time spent: **4.3** hours spent in total
 
 ## User Stories
 
@@ -21,18 +21,20 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 * [✔] User can **undo task deletion**
+* [✔] User can **change the app's color theme**
+* [✔] App's color theme persists across **all activities**
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](https://i.makeagif.com/media/11-12-2021/uk2jc6.gif)
+![Video Walkthrough](https://thumbs.gfycat.com/OrneryEnchantingAdder-size_restricted.gif)
 
-GIF created with [makeagif](http://www.makeagif.com).
+GIF created with [gfycat](http://www.gfycat.com).
 
 ## Notes
 
-N/A
+ActionBar icons by Icons8
 
 ## License
 
