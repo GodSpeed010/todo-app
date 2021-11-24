@@ -1,6 +1,7 @@
 package com.example.simpletodo
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -25,6 +27,10 @@ class MainActivity : AppCompatActivity() {
     val KEY_ITEM_TEXT: String = "item_text"
     val KEY_ITEM_POSITION: String = "item position"
     val EDIT_TEXT_CODE: Int = 20
+
+    val COLOR_THEME: String = "theme"
+    var colorTheme = "default"
+    val EDIT_THEME_CODE: Int = 30
 
     var listOfTasks = mutableListOf<String>()
     lateinit var adapter: TaskItemAdapter
@@ -61,6 +67,9 @@ class MainActivity : AppCompatActivity() {
                 //pass the data being edited
                 i.putExtra(KEY_ITEM_TEXT, listOfTasks.get(position))
                 i.putExtra(KEY_ITEM_POSITION, position)
+
+                //pass the color theme
+                i.putExtra(COLOR_THEME, colorTheme)
 
                 //display the activity
                 startActivityForResult(i, EDIT_TEXT_CODE)
@@ -105,6 +114,7 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         //super.onActivityResult(requestCode, resultCode, data)
 
+        //handles for EditActivity
         if (resultCode == RESULT_OK && requestCode == EDIT_TEXT_CODE) {
             // Retrieve the updated text value
             val itemText: String? = data?.getStringExtra(KEY_ITEM_TEXT)
@@ -131,6 +141,13 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(applicationContext, "Item updated successfully!", Toast.LENGTH_SHORT).show()
         } else {
             Log.w("my_tag", "Unknown call to onActivityResult")
+        }
+
+        //handles for ThemeActivity
+        if (requestCode == EDIT_THEME_CODE) {
+            Log.d("my_tag", "returned from ThemeActivity with ${data?.getStringExtra(COLOR_THEME)}")
+            setThemeTo(data?.getStringExtra(COLOR_THEME))
+            colorTheme = data?.getStringExtra(COLOR_THEME).toString()
         }
 //        val editedText: String = intent.getStringExtra(EditActivity().KEY_ITEM_TEXT)
 //
@@ -210,12 +227,38 @@ class MainActivity : AppCompatActivity() {
                 val i = Intent(this@MainActivity, ThemeActivity::class.java)
 
                 //launch the activity
-                startActivity(i)
+                startActivityForResult(i, EDIT_THEME_CODE)
 
                 return true
             }
             else ->
                 return super.onOptionsItemSelected(item)
         }
+    }
+
+    fun setThemeTo(theme: String?) {
+        when (theme) {
+            "red" -> {
+                setTheme(R.style.Theme_SimpleToDo_Red)
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.red_800)))
+                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.red_800))
+            }
+            "green" -> {
+                setTheme(R.style.Theme_SimpleToDo_Green)
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.green_800)))
+                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.green_800))
+            }
+            "blue" -> {
+                setTheme(R.style.Theme_SimpleToDo_Blue)
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.blue_700)))
+                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.blue_700))
+            }
+            else -> {
+                setTheme(R.style.Theme_SimpleToDo)
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.purple_500)))
+                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.purple_500))
+            }
+        }
+
     }
 }
