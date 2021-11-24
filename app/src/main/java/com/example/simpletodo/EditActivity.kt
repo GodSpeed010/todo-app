@@ -49,7 +49,8 @@ class EditActivity : AppCompatActivity() {
             "red" -> {
                 setTheme(R.style.Theme_SimpleToDo_Red)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.red_800)))
-                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.red_800))
+                findViewById<Button>(R.id.btnSave).setBackgroundColor(resources.getColor(R.color.red_800))
+
                 if (Build.VERSION.SDK_INT >= 21) {
                     window.navigationBarColor = resources.getColor(R.color.red_800)
                     window.statusBarColor = resources.getColor(R.color.red_800)
@@ -58,7 +59,8 @@ class EditActivity : AppCompatActivity() {
             "green" -> {
                 setTheme(R.style.Theme_SimpleToDo_Green)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.green_800)))
-                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.green_800))
+                findViewById<Button>(R.id.btnSave).setBackgroundColor(resources.getColor(R.color.green_800))
+
                 if (Build.VERSION.SDK_INT >= 21) {
                     window.navigationBarColor = resources.getColor(R.color.green_800)
                     window.statusBarColor = resources.getColor(R.color.green_800)
@@ -67,7 +69,8 @@ class EditActivity : AppCompatActivity() {
             "blue" -> {
                 setTheme(R.style.Theme_SimpleToDo_Blue)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.blue_700)))
-                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.blue_700))
+                findViewById<Button>(R.id.btnSave).setBackgroundColor(resources.getColor(R.color.blue_700))
+
                 if (Build.VERSION.SDK_INT >= 21) {
                     window.navigationBarColor = resources.getColor(R.color.blue_700)
                     window.statusBarColor = resources.getColor(R.color.blue_700)
@@ -76,13 +79,14 @@ class EditActivity : AppCompatActivity() {
             else -> {
                 setTheme(R.style.Theme_SimpleToDo)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.purple_500)))
-                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.purple_500))
+                findViewById<Button>(R.id.btnSave).setBackgroundColor(resources.getColor(R.color.purple_500))
+
                 if (Build.VERSION.SDK_INT >= 21) {
                     window.navigationBarColor = resources.getColor(R.color.purple_500)
                     window.statusBarColor = resources.getColor(R.color.purple_500)
                 }
             }
         }
-        
+
     }
 }

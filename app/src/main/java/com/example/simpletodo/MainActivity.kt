@@ -145,7 +145,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         //handles for ThemeActivity
-        if (requestCode == EDIT_THEME_CODE) {
+        if (resultCode == RESULT_OK && requestCode == EDIT_THEME_CODE) {
             Log.d("my_tag", "returned from ThemeActivity with ${data?.getStringExtra(COLOR_THEME)}")
             setThemeTo(data?.getStringExtra(COLOR_THEME))
             colorTheme = data?.getStringExtra(COLOR_THEME).toString()
@@ -227,6 +227,7 @@ class MainActivity : AppCompatActivity() {
                 //create the new activity
                 val i = Intent(this@MainActivity, ThemeActivity::class.java)
 
+                i.putExtra(COLOR_THEME, colorTheme)
                 //launch the activity
                 startActivityForResult(i, EDIT_THEME_CODE)
 
