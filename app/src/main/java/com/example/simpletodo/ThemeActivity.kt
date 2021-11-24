@@ -13,11 +13,15 @@ import androidx.core.content.ContextCompat
 
 class ThemeActivity : AppCompatActivity() {
 
-    var colorTheme: String = "default"
+    lateinit var colorTheme: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_theme)
+
+        colorTheme = intent.getStringExtra(MainActivity().COLOR_THEME).toString()
+        setThemeTo(colorTheme)
+        Log.d("my_tag", "colorTheme is $colorTheme")
 
         // String with default theme color
         // Set a default theme
@@ -34,52 +38,20 @@ class ThemeActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.btn_red).setOnClickListener {
             //change theme to red
-            setTheme(R.style.Theme_SimpleToDo_Red)
-            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.red_800)))
-
-            if (Build.VERSION.SDK_INT >= 21) {
-                window.navigationBarColor = resources.getColor(R.color.red_800)
-                window.statusBarColor = resources.getColor(R.color.red_800)
-            }
-            //update theme variable
-            colorTheme = "red"
+            setThemeTo("red")
         }
         findViewById<Button>(R.id.btn_green).setOnClickListener {
             //change theme to green
-            setTheme(R.style.Theme_SimpleToDo_Green)
-            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.green_800)))
-
-            if (Build.VERSION.SDK_INT >= 21) {
-                window.navigationBarColor = resources.getColor(R.color.green_800)
-                window.statusBarColor = resources.getColor(R.color.green_800)
-            }
-
-            colorTheme = "green"
+            setThemeTo("green")
         }
         findViewById<Button>(R.id.btn_blue).setOnClickListener {
             //change theme to blue
-            setTheme(R.style.Theme_SimpleToDo_Blue)
-            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.blue_700)))
-
-            if (Build.VERSION.SDK_INT >= 21) {
-                window.navigationBarColor = resources.getColor(R.color.blue_700)
-                window.statusBarColor = resources.getColor(R.color.blue_700)
-            }
-
-            colorTheme = "blue"
+            setThemeTo("blue")
         }
 
         findViewById<Button>(R.id.btn_default).setOnClickListener {
             //change theme to blue
-            setTheme(R.style.Theme_SimpleToDo)
-            supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.purple_500)))
-
-            if (Build.VERSION.SDK_INT >= 21) {
-                window.navigationBarColor = resources.getColor(R.color.purple_500)
-                window.statusBarColor = resources.getColor(R.color.purple_500)
-            }
-
-            colorTheme = "default"
+            setThemeTo("default")
         }
     }
 
@@ -105,6 +77,48 @@ class ThemeActivity : AppCompatActivity() {
             else ->
                 return super.onOptionsItemSelected(item)
         }
+    }
+
+    fun setThemeTo(theme: String?) {
+        when (theme) {
+            "red" -> {
+                setTheme(R.style.Theme_SimpleToDo_Red)
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.red_800)))
+                if (Build.VERSION.SDK_INT >= 21) {
+                    window.navigationBarColor = resources.getColor(R.color.red_800)
+                    window.statusBarColor = resources.getColor(R.color.red_800)
+                }
+                colorTheme = "red"
+            }
+            "green" -> {
+                setTheme(R.style.Theme_SimpleToDo_Green)
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.green_800)))
+                if (Build.VERSION.SDK_INT >= 21) {
+                    window.navigationBarColor = resources.getColor(R.color.green_800)
+                    window.statusBarColor = resources.getColor(R.color.green_800)
+                }
+                colorTheme = "green"
+            }
+            "blue" -> {
+                setTheme(R.style.Theme_SimpleToDo_Blue)
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.blue_700)))
+                if (Build.VERSION.SDK_INT >= 21) {
+                    window.navigationBarColor = resources.getColor(R.color.blue_700)
+                    window.statusBarColor = resources.getColor(R.color.blue_700)
+                }
+                colorTheme = "blue"
+            }
+            else -> {
+                setTheme(R.style.Theme_SimpleToDo)
+                supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.purple_500)))
+                if (Build.VERSION.SDK_INT >= 21) {
+                    window.navigationBarColor = resources.getColor(R.color.purple_500)
+                    window.statusBarColor = resources.getColor(R.color.purple_500)
+                }
+                colorTheme = "default"
+            }
+        }
+
     }
 
 }
