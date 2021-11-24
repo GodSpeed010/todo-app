@@ -2,6 +2,7 @@ package com.example.simpletodo
 
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -36,6 +37,10 @@ class ThemeActivity : AppCompatActivity() {
             setTheme(R.style.Theme_SimpleToDo_Red)
             supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.red_800)))
 
+            if (Build.VERSION.SDK_INT >= 21) {
+                window.navigationBarColor = resources.getColor(R.color.red_800)
+                window.statusBarColor = resources.getColor(R.color.red_800)
+            }
             //update theme variable
             colorTheme = "red"
         }
@@ -44,12 +49,22 @@ class ThemeActivity : AppCompatActivity() {
             setTheme(R.style.Theme_SimpleToDo_Green)
             supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.green_800)))
 
+            if (Build.VERSION.SDK_INT >= 21) {
+                window.navigationBarColor = resources.getColor(R.color.green_800)
+                window.statusBarColor = resources.getColor(R.color.green_800)
+            }
+
             colorTheme = "green"
         }
         findViewById<Button>(R.id.btn_blue).setOnClickListener {
             //change theme to blue
             setTheme(R.style.Theme_SimpleToDo_Blue)
             supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.blue_700)))
+
+            if (Build.VERSION.SDK_INT >= 21) {
+                window.navigationBarColor = resources.getColor(R.color.blue_700)
+                window.statusBarColor = resources.getColor(R.color.blue_700)
+            }
 
             colorTheme = "blue"
         }
@@ -58,6 +73,11 @@ class ThemeActivity : AppCompatActivity() {
             //change theme to blue
             setTheme(R.style.Theme_SimpleToDo)
             supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.purple_500)))
+
+            if (Build.VERSION.SDK_INT >= 21) {
+                window.navigationBarColor = resources.getColor(R.color.purple_500)
+                window.statusBarColor = resources.getColor(R.color.purple_500)
+            }
 
             colorTheme = "default"
         }
