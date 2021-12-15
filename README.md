@@ -4,7 +4,7 @@
 
 Submitted by: **Ahmad Hossain**
 
-Time spent: **4.4** hours spent in total
+Time spent: **5.4** hours spent in total
 
 ## User Stories
 
@@ -23,12 +23,14 @@ The following **additional** features are implemented:
 * [✔] User can **undo task deletion**
 * [✔] User can **change the app's color theme**
 * [✔] App's color theme persists across **all activities**
+* [✔] Tasks are displayed in CardView
+* [✔] CardView displays task, edit button, and delete button
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](https://thumbs.gfycat.com/PoisedFrailJay-size_restricted.gif)
+![Video Walkthrough](https://thumbs.gfycat.com/RemoteIllegalDanishswedishfarmdog-size_restricted.gif)
 
 GIF created with [gfycat](http://www.gfycat.com).
 
