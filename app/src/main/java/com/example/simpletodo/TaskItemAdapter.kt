@@ -3,6 +3,7 @@ package com.example.simpletodo
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -13,6 +14,8 @@ class TaskItemAdapter(val listOfItems: List<String>, val longClickListener: OnLo
 
     interface OnClickListener {
         fun onItemClicked(position: Int)
+        fun onDeleteClicked(position: Int)
+        fun onEditClicked(position: Int)
     }
     interface OnLongClickListener {
         fun onItemLongClicked(position: Int)
@@ -23,7 +26,7 @@ class TaskItemAdapter(val listOfItems: List<String>, val longClickListener: OnLo
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         // Inflate the custom layout
-        val contactView = inflater.inflate(android.R.layout.simple_list_item_1, parent, false)
+        val contactView = inflater.inflate(R.layout.task_item, parent, false)
         // Return a new holder instance
         return ViewHolder(contactView)
     }
@@ -45,13 +48,26 @@ class TaskItemAdapter(val listOfItems: List<String>, val longClickListener: OnLo
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // store references to elements in our layout view
         val textView: TextView
+        val editButton: ImageButton
+        val deleteButton: ImageButton
 
         init {
-            textView = itemView.findViewById(android.R.id.text1)
+            textView = itemView.findViewById(R.id.tv_task)
 
-            textView.setOnClickListener {
+            editButton = itemView.findViewById(R.id.bt_edit)
+            deleteButton = itemView.findViewById(R.id.bt_delete)
+
+            itemView.setOnClickListener {
                 clickListener.onItemClicked(adapterPosition)
             }
+
+            editButton.setOnClickListener {
+                clickListener.onEditClicked(adapterPosition)
+            }
+            deleteButton.setOnClickListener {
+                clickListener.onDeleteClicked(adapterPosition)
+            }
+
             itemView.setOnLongClickListener {
                 longClickListener.onItemLongClicked(adapterPosition)
                 true

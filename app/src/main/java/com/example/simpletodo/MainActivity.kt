@@ -1,22 +1,23 @@
 package com.example.simpletodo
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
 import org.apache.commons.io.FileUtils
 import java.io.File
 import java.io.IOException
@@ -44,18 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         val onLongClickListener = object: TaskItemAdapter.OnLongClickListener {
             override fun onItemLongClicked(position: Int) {
-                //stores the task to be deleted in case user wants to undo
-                val deletedTask = listOfTasks.elementAt(position)
-
-                //remove the item from the list
-                listOfTasks.removeAt(position)
-                //notify the adapter that our data set has changed
-                adapter.notifyDataSetChanged()
-
-                //shows a snackbar that informs the user they deleted a task and has an undo button
-                showUndoSnackbar(deletedTask, position)
-
-                saveItems()
+                deleteTask(position)
             }
 
         }
@@ -74,6 +64,49 @@ class MainActivity : AppCompatActivity() {
 
                 //display the activity
                 startActivityForResult(i, EDIT_TEXT_CODE)
+            }
+
+            override fun onDeleteClicked(position: Int) {
+                Log.d("my_tag", "onDeleteClicked: delete button clicked")
+                deleteTask(position)
+            }
+
+            override fun onEditClicked(position: Int) {
+                Log.d("my_tag", "onEditClicked: edit button clicked")
+
+                val builder = AlertDialog.Builder(this@MainActivity)
+                builder.setTitle("Edit Task")
+
+                val viewInflated: View = LayoutInflater.from(this@MainActivity)
+                    .inflate(R.layout.popup_task_edit, findViewById(android.R.id.content), false)
+
+                // Set up the input
+                val inputEditText = viewInflated.findViewById(R.id.input) as TextInputEditText
+
+                //populate EditText with task's current text
+                inputEditText.setText(listOfTasks[position])
+
+                // Specify the type of input expected
+                builder.setView(viewInflated)
+
+                builder.setPositiveButton(android.R.string.ok,
+                    DialogInterface.OnClickListener { dialog, which ->
+                        dialog.dismiss()
+
+                        //update task in listOfTasks
+                        listOfTasks[position] = inputEditText.text.toString()
+
+                        //make RecyclerView show updated Task
+                        adapter.notifyItemChanged(position)
+
+                        saveItems()
+                    })
+
+                builder.setNegativeButton(android.R.string.cancel,
+                    DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
+
+                builder.show()
+
             }
         }
         //look up recyclerView in layout
@@ -109,6 +142,21 @@ class MainActivity : AppCompatActivity() {
                 saveItems()
 			}
         }
+    }
+
+    fun deleteTask(position: Int) {
+        //stores the task to be deleted in case user wants to undo
+        val deletedTask = listOfTasks.elementAt(position)
+
+        //remove the item from the list
+        listOfTasks.removeAt(position)
+        //notify the adapter that our data set has changed
+        adapter.notifyItemRemoved(position)
+
+        //shows a snackbar that informs the user they deleted a task and has an undo button
+        showUndoSnackbar(deletedTask, position)
+
+        saveItems()
     }
 
     //handle the result of the edit activity
@@ -174,7 +222,6 @@ class MainActivity : AppCompatActivity() {
             ioException.printStackTrace()
         }
     }
-
 
     //Save items by writing them into our data file
     fun saveItems() {
