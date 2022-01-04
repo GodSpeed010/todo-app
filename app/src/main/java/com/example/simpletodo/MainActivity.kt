@@ -8,14 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.simpletodo.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import org.apache.commons.io.FileUtils
@@ -25,6 +23,9 @@ import java.nio.charset.Charset
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
+
+    lateinit var binding: ActivityMainBinding
 
     val KEY_ITEM_TEXT: String = "item_text"
     val KEY_ITEM_POSITION: String = "item position"
@@ -39,10 +40,42 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        //load tasks from local database
         loadItems()
 
+        //setup the Recycler View
+        setupRecyclerView()
+
+        //Get a reference to the button and then set an onclicklistener
+        binding.button.setOnClickListener {
+            //1. Grab the text the user entered into addTaskField
+            val userInputtedTask = binding.addTaskField.text.toString()
+			
+			//if task is not an empty String
+			if (userInputtedTask.isNotEmpty()) {
+			    //add the task
+			    addTask(userInputtedTask)
+			}
+        }
+    }
+
+    private fun addTask(task: String) {
+        //Add the String to the listOfTasks
+        listOfTasks.add(task)
+
+        //Notify the adapter that our data has been updated
+        adapter.notifyItemInserted(listOfTasks.size - 1)
+
+        //Reset the text field
+        binding.addTaskField.setText("")
+
+        saveItems()
+    }
+
+    private fun setupRecyclerView() {
         val onLongClickListener = object: TaskItemAdapter.OnLongClickListener {
             override fun onItemLongClicked(position: Int) {
                 deleteTask(position)
@@ -67,81 +100,58 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onDeleteClicked(position: Int) {
-                Log.d("my_tag", "onDeleteClicked: delete button clicked")
+                Log.d("my_tag", "onDeleteClicked")
                 deleteTask(position)
             }
 
             override fun onEditClicked(position: Int) {
-                Log.d("my_tag", "onEditClicked: edit button clicked")
+                Log.d("my_tag", "onEditClicked")
 
-                val builder = AlertDialog.Builder(this@MainActivity)
-                builder.setTitle("Edit Task")
-
-                val viewInflated: View = LayoutInflater.from(this@MainActivity)
-                    .inflate(R.layout.popup_task_edit, findViewById(android.R.id.content), false)
-
-                // Set up the input
-                val inputEditText = viewInflated.findViewById(R.id.input) as TextInputEditText
-
-                //populate EditText with task's current text
-                inputEditText.setText(listOfTasks[position])
-
-                // Specify the type of input expected
-                builder.setView(viewInflated)
-
-                builder.setPositiveButton(android.R.string.ok,
-                    DialogInterface.OnClickListener { dialog, which ->
-                        dialog.dismiss()
-
-                        //update task in listOfTasks
-                        listOfTasks[position] = inputEditText.text.toString()
-
-                        //make RecyclerView show updated Task
-                        adapter.notifyItemChanged(position)
-
-                        saveItems()
-                    })
-
-                builder.setNegativeButton(android.R.string.cancel,
-                    DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
-
-                builder.show()
-
+                showEditDialog(position)
             }
         }
-        //look up recyclerView in layout
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+
         // Create adapter passing in the sample user data
         adapter = TaskItemAdapter(listOfTasks, onLongClickListener, onClickListener)
+
         //Attach the adapter to the recyclerView to populate items
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+    }
 
-        //Setup the button and input field, so that the user can enter a task and add it
+    private fun showEditDialog(position: Int) {
+        val builder = AlertDialog.Builder(this@MainActivity)
+        builder.setTitle("Edit Task")
 
-        val inputTextField = findViewById<EditText>(R.id.addTaskField)
+        val viewInflated: View = LayoutInflater.from(this@MainActivity)
+            .inflate(R.layout.popup_task_edit, findViewById(android.R.id.content), false)
 
-        //Get a reference to the button
-        // and then set an onclicklistener
-        findViewById<Button>(R.id.button).setOnClickListener {
-            //1. Grab the text the user entered into @id/addTaskField
-            val userInputtedTask = inputTextField.text.toString()
-			
-			//if task is not an empty String
-			if (userInputtedTask.isNotEmpty()) {
+        // Set up the input
+        val inputEditText = viewInflated.findViewById(R.id.input) as TextInputEditText
 
-                //2. Add the String to the listOfTasks
-                listOfTasks.add(userInputtedTask)
+        //populate EditText with task's current text
+        inputEditText.setText(listOfTasks[position])
 
-                //Notify the adapter that our data has been updated
-                adapter.notifyItemInserted(listOfTasks.size - 1)
+        // Specify the type of input expected
+        builder.setView(viewInflated)
 
-                //3. Reset the text field
-                inputTextField.setText("")
+        builder.setPositiveButton(android.R.string.ok,
+            DialogInterface.OnClickListener { dialog, which ->
+                dialog.dismiss()
+
+                //update task in listOfTasks
+                listOfTasks[position] = inputEditText.text.toString()
+
+                //make RecyclerView show updated Task
+                adapter.notifyItemChanged(position)
 
                 saveItems()
-			}
-        }
+            })
+
+        builder.setNegativeButton(android.R.string.cancel,
+            DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
+
+        builder.show()
     }
 
     fun deleteTask(position: Int) {
@@ -236,7 +246,7 @@ class MainActivity : AppCompatActivity() {
     private fun showUndoSnackbar(deletedTask: String, position: Int): Boolean {
         val deletedText = "Deleted a task"
         val deletedTaskSnackbar = Snackbar.make(
-            findViewById(R.id.constraint_Layout),
+            binding.constraintLayout,
             deletedText,
             Snackbar.LENGTH_SHORT)
 
@@ -290,7 +300,7 @@ class MainActivity : AppCompatActivity() {
             "red" -> {
                 setTheme(R.style.Theme_SimpleToDo_Red)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.red_800)))
-                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.red_800))
+                binding.button.setBackgroundColor(resources.getColor(R.color.red_800))
                 if (Build.VERSION.SDK_INT >= 21) {
                     window.navigationBarColor = resources.getColor(R.color.red_800)
                     window.statusBarColor = resources.getColor(R.color.red_800)
@@ -299,7 +309,7 @@ class MainActivity : AppCompatActivity() {
             "green" -> {
                 setTheme(R.style.Theme_SimpleToDo_Green)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.green_800)))
-                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.green_800))
+                binding.button.setBackgroundColor(resources.getColor(R.color.green_800))
                 if (Build.VERSION.SDK_INT >= 21) {
                     window.navigationBarColor = resources.getColor(R.color.green_800)
                     window.statusBarColor = resources.getColor(R.color.green_800)
@@ -308,7 +318,7 @@ class MainActivity : AppCompatActivity() {
             "blue" -> {
                 setTheme(R.style.Theme_SimpleToDo_Blue)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.blue_700)))
-                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.blue_700))
+                binding.button.setBackgroundColor(resources.getColor(R.color.blue_700))
                 if (Build.VERSION.SDK_INT >= 21) {
                     window.navigationBarColor = resources.getColor(R.color.blue_700)
                     window.statusBarColor = resources.getColor(R.color.blue_700)
@@ -317,7 +327,7 @@ class MainActivity : AppCompatActivity() {
             else -> {
                 setTheme(R.style.Theme_SimpleToDo)
                 supportActionBar?.setBackgroundDrawable(ColorDrawable(ContextCompat.getColor(this,R.color.purple_500)))
-                findViewById<Button>(R.id.button).setBackgroundColor(resources.getColor(R.color.purple_500))
+                binding.button.setBackgroundColor(resources.getColor(R.color.purple_500))
                 if (Build.VERSION.SDK_INT >= 21) {
                     window.navigationBarColor = resources.getColor(R.color.purple_500)
                     window.statusBarColor = resources.getColor(R.color.purple_500)

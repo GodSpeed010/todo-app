@@ -10,18 +10,23 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import com.example.simpletodo.databinding.ActivityThemeBinding
 
 class ThemeActivity : AppCompatActivity() {
+
+    private val TAG = "ThemeActivity"
+    lateinit var binding: ActivityThemeBinding
 
     lateinit var colorTheme: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_theme)
+        binding = ActivityThemeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         colorTheme = intent.getStringExtra(MainActivity().COLOR_THEME).toString()
         setThemeTo(colorTheme)
-        Log.d("my_tag", "colorTheme is $colorTheme")
+        Log.d(TAG, "colorTheme is $colorTheme")
 
         // String with default theme color
         // Set a default theme
@@ -36,20 +41,20 @@ class ThemeActivity : AppCompatActivity() {
             // sets theme for NewActivity
 
 
-        findViewById<Button>(R.id.btn_red).setOnClickListener {
+        binding.btnRed.setOnClickListener {
             //change theme to red
             setThemeTo("red")
         }
-        findViewById<Button>(R.id.btn_green).setOnClickListener {
+        binding.btnGreen.setOnClickListener {
             //change theme to green
             setThemeTo("green")
         }
-        findViewById<Button>(R.id.btn_blue).setOnClickListener {
+        binding.btnBlue.setOnClickListener {
             //change theme to blue
             setThemeTo("blue")
         }
 
-        findViewById<Button>(R.id.btn_default).setOnClickListener {
+        binding.btnDefault.setOnClickListener {
             //change theme to blue
             setThemeTo("default")
         }
@@ -65,7 +70,7 @@ class ThemeActivity : AppCompatActivity() {
         // Handle presses on the action bar items
         when (item.getItemId()) {
             R.id.miSave -> {
-                Log.d("my_tag", "Save button pressed")
+                Log.d(TAG, "Save button pressed")
 
                 //send back the theme String
                 intent.putExtra(MainActivity().COLOR_THEME, colorTheme)
