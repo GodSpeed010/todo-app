@@ -4,7 +4,7 @@
 
 Submitted by: **Ahmad Hossain**
 
-Time spent: **5.4** hours spent in total
+Time spent: **6.4** hours spent in total
 
 ## User Stories
 
@@ -25,6 +25,7 @@ The following **additional** features are implemented:
 * [✔] App's color theme persists across **all activities**
 * [✔] Tasks are displayed in CardView
 * [✔] CardView displays task, edit button, and delete button
+* [✔] App implements View Binding
 
 ## Video Walkthrough
 
