@@ -20,6 +20,7 @@ class EditActivity : AppCompatActivity() {
         binding = ActivityEditBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //set toolbar as Action Bar
         setSupportActionBar(binding.toolbar)
 
         //set the theme

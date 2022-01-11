@@ -4,7 +4,7 @@
 
 Submitted by: **Ahmad Hossain**
 
-Time spent: **6.4** hours spent in total
+Time spent: **7.4** hours spent in total
 
 ## User Stories
 
@@ -25,13 +25,14 @@ The following **additional** features are implemented:
 * [✔] App's color theme persists across **all activities**
 * [✔] Tasks are displayed in CardView
 * [✔] CardView displays task, edit button, and delete button
-* [✔] App implements View Binding
+* [✔] App implements **View Binding**
+* [✔] Toolbar **collapses with RecyclerView** scroll
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-![Video Walkthrough](https://thumbs.gfycat.com/RemoteIllegalDanishswedishfarmdog-size_restricted.gif)
+![Video Walkthrough](https://thumbs.gfycat.com/CostlyForcefulGalapagoshawk-size_restricted.gif)
 
 GIF created with [gfycat](http://www.gfycat.com).
 

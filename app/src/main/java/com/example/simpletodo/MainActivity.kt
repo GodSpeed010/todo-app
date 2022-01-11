@@ -43,6 +43,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //set toolbar as Action Bar
         setSupportActionBar(binding.toolbar)
 
         //load tasks from local database
