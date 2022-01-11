@@ -7,6 +7,12 @@
     android:orientation="vertical"
     tools:context=".EditActivity">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:theme="@style/AppToolbar"/>
+
     <EditText
         android:id="@+id/etItem"
         android:layout_width="match_parent"

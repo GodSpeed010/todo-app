@@ -24,6 +24,8 @@ class ThemeActivity : AppCompatActivity() {
         binding = ActivityThemeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbar)
+
         colorTheme = intent.getStringExtra(MainActivity().COLOR_THEME).toString()
         setThemeTo(colorTheme)
         Log.d(TAG, "colorTheme is $colorTheme")

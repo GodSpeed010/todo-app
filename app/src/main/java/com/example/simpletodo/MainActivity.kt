@@ -43,6 +43,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setSupportActionBar(binding.toolbar)
+
         //load tasks from local database
         loadItems()
 
@@ -53,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         binding.button.setOnClickListener {
             //1. Grab the text the user entered into addTaskField
             val userInputtedTask = binding.addTaskField.text.toString()
-			
+
 			//if task is not an empty String
 			if (userInputtedTask.isNotEmpty()) {
 			    //add the task
@@ -249,6 +251,9 @@ class MainActivity : AppCompatActivity() {
             binding.constraintLayout,
             deletedText,
             Snackbar.LENGTH_SHORT)
+
+        //make the Snackbar show above the addTaskField EditText
+        deletedTaskSnackbar.anchorView = binding.addTaskField
 
         //create the undo button
         deletedTaskSnackbar.setAction("UNDO", View.OnClickListener {
